@@ -1,73 +1,33 @@
-let ans = 0;
-let op1 = "", op2 = "";
-let turn = true;
-let op;
+function addToHistory(color){
+    const colorHistory = document.getElementById('colorHistory');
+    const colorActive = document.getElementById('colorActive');
+    const colorName = document.getElementById('colorName');
 
-let key = document.getElementsByClassName("number");
-let display = document.getElementById("display");
-let operators = document.getElementsByClassName("operator");
-let equal = document.getElementById("equal");
-let clr = document.getElementById("C");
-
-Array.from(key).forEach((element) => {
-  element.addEventListener("click", takeInputs);
-});
-
-Array.from(operators).forEach((element) => {
-  element.addEventListener("click", takeOperation);
-});
-
-equal.addEventListener("click", calculate);
-
-clr.addEventListener("click", clear);
-
-function takeInputs() {
-  let currVal = this.textContent.trim();
-  if (turn) op1 += currVal;
-  else op2 += currVal;
-  if (display.innerText == "0") display.innerHTML = `<span>${currVal}</span>`;
-  else display.innerHTML += `<span>${currVal}</span>`;
+    const colorItem = document.createElement('div');
+    colorItem.style.backgroundColor = color;
+    colorItem.classList.add('colorItem');
+    colorItem.addEventListener('mouseover', () => {
+        colorActive.style.backgroundColor = color;
+})
+    colorHistory.appendChild(colorItem);
 }
 
-function takeOperation() {
-  turn = false;
-  op = this.textContent.trim();
-  display.innerHTML += `<span>${op}</span>`;
+function getRandomNumber(){
+    return Math.floor(Math.random()*256);
+}
+function handleClick(){
+    const colorActive = document.getElementById("colorActive");
+    const colorName = document.getElementById("colorName");
+
+    const r = getRandomNumber();
+    const g = getRandomNumber();
+    const b = getRandomNumber();
+    
+    const color = ( `rgb(${r}, ${g}, ${b})`);
+    colorActive.style.backgroundColor = color;
+    colorName.textContent = color;
+    addToHistory(color);  
 }
 
-function calculate() {
-  op1 = parseFloat(op1);
-  op2 = parseFloat(op2);
-  console.log("before", op1, op2);
-
-  switch (op) {
-    case "+":
-      ans = op1 + op2;
-      break;
-    case "-":
-      ans = op1 - op2;
-      break;
-    case "*":
-      ans = op1 * op2;
-      break;
-    case "/":
-      ans = op1 / op2;
-      if (op2 == 0) {
-        display.innerHTML = `<span>infinity</span>`;
-        return;
-      }
-      break;
-  }
-  display.innerHTML = `<span>${ans}</span>`;
-  op1 = ans;
-  op2 = "";
-  turn = true;
-}
-
-function clear() {
-  ans = 0;
-  op1 = 0;
-  op2 = 0;
-  turn = true;
-  display.innerHTML = `<span>${ans}</span>`;
-}
+const btn = document.getElementById('colorBtn');
+btn.addEventListener('click', handleClick);
