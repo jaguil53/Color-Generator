@@ -1,0 +1,2 @@
+# Color-Generator
+Frontend practice
